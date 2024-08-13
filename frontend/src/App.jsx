@@ -5,18 +5,22 @@ import axios from 'axios';
 function App() {
   const [urls, setUrls] = useState('');
   const [results, setResults] = useState([]);
+  const [isLoading,setLoading] = useState(false)
 
   const handleChange = (e) => {
     setUrls(e.target.value);
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/check-urls', { urls: urls.split('\n').map(url => url.trim()) });
+      const response = await axios.post('https://smoke-test-t77n.onrender.com/check-urls', { urls: urls.split('\n').map(url => url.trim()) });
       setResults(response.data);
     } catch (error) {
       console.error('Error checking URLs:', error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -118,7 +122,7 @@ function App() {
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          Check URLs
+          {isLoading ? "Loading..." : "Check URLs"}
         </button>
       </form>
       <div>
@@ -129,7 +133,7 @@ function App() {
             </h3>
             {renderAccordion('Links', result.links)}
             {renderAccordion('Broken Links', result.brokenLinks)}
-            {renderAccordion('Redirect Links', result.redirectLinks)}
+            {/* {renderAccordion('Redirect Links', result.redirectLinks)} */}
             {renderAccordion('Missing ARIA Labels', result.missingAriaLabels && result.missingAriaLabels.map(label => `${label.element} - Target: ${label.target}`), false)}
             {renderAccordion('Missing Alt Texts', result.missingAltText && result.missingAltText.map(img => ({ src: img.src, alt: img.alt })), false, true)}
             {renderAccordion('Missing Meta Tags', result.missingMetaTags && result.missingMetaTags.map(tag => `Meta tag: ${tag}`), false)}
