@@ -24,16 +24,16 @@ function App() {
     }
   };
 
-  const renderVideo = (title, items) => (
+  const renderVideo = (sIndex,title, items) => (
     <div className="mb-4 border border-gray-300 rounded">
       <button
         type="button"
         className="w-full px-4 py-2 text-left bg-gray-100 border-b border-gray-300"
-        onClick={() => document.getElementById(title).classList.toggle('hidden')}
+        onClick={() => document.getElementById(`${sIndex}-${title}`).classList.toggle('hidden')}
       >
         {title}
       </button>
-      <div id={title} className="hidden p-4">
+      <div id={`${sIndex}-${title}`} className="hidden p-4">
         {/* {items?.} */}
         {items?.map(video => <div>
           Video: {" "}
@@ -44,21 +44,21 @@ function App() {
           <button
             type="button"
             className="w-full px-4 py-1 text-left bg-gray-200 border-b border-gray-300"
-            onClick={() => document.getElementById(title+'-ttml').classList.toggle('hidden')}
+            onClick={() => document.getElementById(`${sIndex}-${title}-ttml`).classList.toggle('hidden')}
           >
         TTML Files
       </button>
-            <ul id={`${title}-ttml`} className='pl-3'>
+            <ul id={`${sIndex}-${title}-ttml`} className='pl-3'>
             {video?.ccFiles?.map(ccfile => <li className='pl-3'>{ccfile}</li>)}
             </ul>
             <button
             type="button"
             className="w-full px-4 py-1 text-left bg-gray-200 border-b border-gray-300"
-            onClick={() => document.getElementById(title+'-txt').classList.toggle('hidden')}
+            onClick={() => document.getElementById(`${sIndex}-${title}-txt`).classList.toggle('hidden')}
           >
        Downloadable Files (TXT)
       </button>
-            <ul id={`${title}-txt`}  className='pl-3'>
+            <ul id={`${sIndex}-${title}-txt`}  className='pl-3'>
             {video?.downloadableFiles?.map(ccfile => <li className='pl-3'>{ccfile}</li>)}
             </ul>
           </div>
@@ -68,16 +68,16 @@ function App() {
   )
 
 
-  const renderAccordion = (title, items, isLink = true, isImage = false) => (
+  const renderAccordion = (sIndex,title, items, isLink = true, isImage = false) => (
     <div className="mb-4 border border-gray-300 rounded">
       <button
         type="button"
         className="w-full px-4 py-2 text-left bg-gray-100 border-b border-gray-300"
-        onClick={() => document.getElementById(title).classList.toggle('hidden')}
+        onClick={() => document.getElementById(`${sIndex}-${title}`).classList.toggle('hidden')}
       >
         {title}
       </button>
-      <div id={title} className="hidden p-4">
+      <div id={`${sIndex}-${title}`} className="hidden p-4">
         <ul>
           {items && items.length > 0 ? items.map((item, index) => (
             <li key={index} className="mb-2">
@@ -131,14 +131,14 @@ function App() {
             <h3 className="text-xl font-semibold mb-2">
               Parent URL: <a href={result.parentUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{result.parentUrl}</a>
             </h3>
-            {renderAccordion('Links', result.links)}
-            {renderAccordion('Broken Links', result.brokenLinks)}
+            {renderAccordion(index,'Links', result.links)}
+            {renderAccordion(index,'Broken Links', result.brokenLinks)}
             {/* {renderAccordion('Redirect Links', result.redirectLinks)} */}
-            {renderAccordion('Missing ARIA Labels', result.missingAriaLabels && result.missingAriaLabels.map(label => `${label.element} - Target: ${label.target}`), false)}
-            {renderAccordion('Missing Alt Texts', result.missingAltText && result.missingAltText.map(img => ({ src: img.src, alt: img.alt })), false, true)}
-            {renderAccordion('Missing Meta Tags', result.missingMetaTags && result.missingMetaTags.map(tag => `Meta tag: ${tag}`), false)}
+            {renderAccordion(index,'Missing ARIA Labels', result.missingAriaLabels && result.missingAriaLabels.map(label => `${label.element} - Target: ${label.target}`), false)}
+            {renderAccordion(index,'Missing Alt Texts', result.missingAltText && result.missingAltText.map(img => ({ src: img.src, alt: img.alt })), false, true)}
+            {renderAccordion(index,'Missing Meta Tags', result.missingMetaTags && result.missingMetaTags.map(tag => `Meta tag: ${tag}`), false)}
             {/* {JSON.stringify(result.videos)} */}
-            {renderVideo('Videos present',result.videos)}
+            {renderVideo(index,'Videos present',result.videos)}
             
           </div>
         ))}
